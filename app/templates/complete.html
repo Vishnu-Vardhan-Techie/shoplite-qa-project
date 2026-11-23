@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="card" style="text-align:center">
+  <h2 data-test="order-success">Thank you for your order!</h2>
+  <p>Order ID: <strong data-test="order-id">{{ order_id }}</strong></p>
+  <p>Amount paid: ₹<span data-test="order-total">{{ '%.2f'|format(total) }}</span></p>
+  <a href="/products">Continue shopping</a>
+</div>
+{% endblock %}

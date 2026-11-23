@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h2>Products</h2>
+  <form method="get"><select name="sort" data-test="sort-select" onchange="this.form.submit()" style="width:200px">
+    <option value="name_asc" {% if sort=='name_asc' %}selected{% endif %}>Name (A to Z)</option>
+    <option value="name_desc" {% if sort=='name_desc' %}selected{% endif %}>Name (Z to A)</option>
+    <option value="price_asc" {% if sort=='price_asc' %}selected{% endif %}>Price (low to high)</option>
+    <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>Price (high to low)</option>
+  </select></form>
+</div>
+<div class="grid">
+{% for p in products %}
+  <div class="card" data-test="product-card">
+    <h3 data-test="product-name">{{ p.name }}</h3>
+    <p>₹<span data-test="product-price">{{ '%.2f'|format(p.price) }}</span></p>
+    <form method="post" action="/cart/add/{{ p.id }}">
+      {% if p.stock > 0 %}
+      <button data-test="add-to-cart-{{ p.id }}">Add to cart</button>
+      {% else %}
+      <button disabled data-test="add-to-cart-{{ p.id }}">Out of stock</button>
+      {% endif %}
+    </form>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

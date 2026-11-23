@@ -1,0 +1,37 @@
+name: QA test suite
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Smoke tests
+        run: pytest -m smoke
+
+      - name: Full regression (API + UI)
+        run: pytest --html=reports/report.html --self-contained-html --junitxml=reports/junit.xml --tracing=retain-on-failure --screenshot=only-on-failure
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: |
+            reports/
+            test-results/

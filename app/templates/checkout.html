@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block content %}
+<h2>Checkout</h2>
+<div class="card" style="max-width:420px">
+  <p>Order total: ₹<span data-test="checkout-total">{{ '%.2f'|format(total) }}</span></p>
+  <form method="post" data-test="checkout-form" novalidate>
+    <label for="full_name">Full name</label>
+    <input id="full_name" name="full_name" data-test="full-name" value="{{ form.get('full_name','') }}">
+    {% if errors.full_name %}<p class="error" data-test="error-full_name">{{ errors.full_name }}</p>{% endif %}
+    <label for="email">Email</label>
+    <input id="email" name="email" data-test="email" value="{{ form.get('email','') }}">
+    {% if errors.email %}<p class="error" data-test="error-email">{{ errors.email }}</p>{% endif %}
+    <label for="pincode">PIN code</label>
+    <input id="pincode" name="pincode" data-test="pincode" value="{{ form.get('pincode','') }}">
+    {% if errors.pincode %}<p class="error" data-test="error-pincode">{{ errors.pincode }}</p>{% endif %}
+    <button type="submit" data-test="place-order">Place order</button>
+  </form>
+</div>
+{% endblock %}
